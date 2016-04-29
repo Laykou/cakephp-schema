@@ -1,7 +1,7 @@
 <?php
 namespace Schema;
 
-use Cake\Database\Connection;
+use Cake\Datasource\ConnectionInterface;
 use Cake\Database\Schema\Table as SchemaTable;
 
 /**
@@ -33,7 +33,7 @@ class Table extends SchemaTable
      * @return array List of SQL statements to create the table and the
      *    required indexes.
      */
-    public function createSql(Connection $connection)
+    public function createSql(ConnectionInterface $connection)
     {
         $this->_extractForeignKeys($connection);
         return parent::createSql($connection);
@@ -60,7 +60,7 @@ class Table extends SchemaTable
     }
 
     /**
-     * Refresh the protected foreign keys variable. 
+     * Refresh the protected foreign keys variable.
      * All foreign keys are removed from the original constraints.
      *
      * @return void

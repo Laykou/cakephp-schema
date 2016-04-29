@@ -18,7 +18,7 @@ class SeedTask extends Shell
     private $_config = [
         'connection' => 'test',
         'seed' => 'config/seed.php',
-        'truncate' => true
+        'truncate' => true,
     ];
 
     /**
@@ -46,7 +46,7 @@ class SeedTask extends Shell
      * @return void
      */
     protected function _truncate($db, $data = null)
-    {        
+    {
         if ($this->_config['truncate']) {
             $this->_io->out('Truncating ', 0);
 
@@ -119,15 +119,15 @@ class SeedTask extends Shell
             $schema = $db->schemaCollection()->describe($table);
             list($fields, $values, $types) = $this->_getRecords($schema, $rows);
             $query = $db->newQuery()
-            ->insert($fields, $types)
-            ->into($table);
+                ->insert($fields, $types)
+                ->into($table);
 
             foreach ($values as $row) {
                 $query->values($row);
             }
 
             $query->execute()->closeCursor();
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             $this->_io->err($e->getMessage());
             exit(1);
         }
