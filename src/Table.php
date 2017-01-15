@@ -1,8 +1,9 @@
 <?php
 namespace Schema;
 
-use Cake\Datasource\ConnectionInterface;
+use Cake\Database\Connection;
 use Cake\Database\Schema\Table as SchemaTable;
+use Cake\Datasource\ConnectionInterface;
 
 /**
  * Custom table object for better manipulation with foreign keys.
