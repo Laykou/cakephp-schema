@@ -2,6 +2,7 @@
 namespace Schema\Shell\Task;
 
 use Cake\Console\Shell;
+use Cake\Database\Driver\Postgres;
 use Cake\Database\Driver\Sqlserver;
 use Cake\Database\Schema\Table;
 use Cake\Datasource\ConnectionManager;
@@ -206,6 +207,17 @@ class SeedTask extends Shell
         if ($db->driver() instanceof Sqlserver) {
             $table = $db->quoteIdentifier($table);
             $db->query(sprintf('SET IDENTITY_INSERT %s OFF', $table))->closeCursor();
+        }
+
+        // Reset sequencer in Postgres if ID column exists
+        if ($db->driver() instanceof Postgres) {
+            if ($db->schemaCollection()->describe($table)->column('id') !== null) {
+
+                $quotedTable = $db->quoteIdentifier($table);
+                $query = sprintf("SELECT setval('%s_id_seq', (SELECT MAX(id) FROM %s));", $table, $quotedTable);
+
+                $db->query($query)->closeCursor();
+            }
         }
     }
 
